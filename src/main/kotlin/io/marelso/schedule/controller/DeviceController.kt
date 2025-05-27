@@ -4,6 +4,7 @@ import io.marelso.schedule.domain.Device
 import io.marelso.schedule.domain.Schedule
 import io.marelso.schedule.service.DeviceService
 import org.springframework.http.HttpStatus
+import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.RequestMapping
@@ -19,24 +20,24 @@ import org.springframework.web.bind.annotation.ResponseStatus
 class DeviceController(private val service: DeviceService) {
 
     @PostMapping
-    fun create(@RequestBody device: Device): Device = service.create(device)
+    fun create(@RequestBody device: Device) = ResponseEntity.ok(service.create(device))
 
     @GetMapping("/{id}")
-    fun get(@PathVariable("id") id: String) = service.getById(id)
+    fun get(@PathVariable("id") id: String) = ResponseEntity.ok(service.getById(id))
 
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    fun delete(@PathVariable("id") id: String) = service.delete(id)
+    fun delete(@PathVariable("id") id: String) = ResponseEntity.ok(service.delete(id))
 
     @PutMapping("/{id}/schedule")
     fun addSchedule(
         @PathVariable("id") id: String,
         @RequestBody schedule: Schedule,
-    ) = service.addSchedule(id = id, schedule =  schedule)
+    ) = ResponseEntity.ok(service.addSchedule(id = id, schedule =  schedule))
 
     @PutMapping("/{id}/schedule/{scheduleId}")
     fun removeSchedule(
         @PathVariable("id") id: String,
         @PathVariable scheduleId: String
-    ) = service.removeSchedule(id = id, scheduleId =  scheduleId)
+    ) = ResponseEntity.ok(service.removeSchedule(id = id, scheduleId =  scheduleId))
 }
