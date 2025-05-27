@@ -1,7 +1,9 @@
 package io.marelso.schedule.controller
 
 import io.marelso.schedule.domain.Device
+import io.marelso.schedule.domain.DeviceCreateDTO
 import io.marelso.schedule.domain.Schedule
+import io.marelso.schedule.domain.ScheduleCreateDTO
 import io.marelso.schedule.service.DeviceService
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
@@ -20,7 +22,7 @@ import org.springframework.web.bind.annotation.ResponseStatus
 class DeviceController(private val service: DeviceService) {
 
     @PostMapping
-    fun create(@RequestBody device: Device) = ResponseEntity.ok(service.create(device))
+    fun create(@RequestBody device: DeviceCreateDTO) = ResponseEntity.ok(service.create(device))
 
     @GetMapping("/{id}")
     fun get(@PathVariable("id") id: String) = ResponseEntity.ok(service.getById(id))
@@ -32,7 +34,7 @@ class DeviceController(private val service: DeviceService) {
     @PutMapping("/{id}/schedule")
     fun addSchedule(
         @PathVariable("id") id: String,
-        @RequestBody schedule: Schedule,
+        @RequestBody schedule: ScheduleCreateDTO,
     ) = ResponseEntity.ok(service.addSchedule(id = id, schedule =  schedule))
 
     @PutMapping("/{id}/schedule/{scheduleId}")
