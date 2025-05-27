@@ -13,16 +13,24 @@ class DeviceService(private val repository: DeviceRepository) {
 
     fun delete(id: String) = repository.deleteById(id)
 
-    fun getById(id: String) = findById(id)
+    fun getById(id: String): Device = findById(id)
 
     private fun findById(id: String): Device = repository
         .findByIdOrNull(id) ?: throw RuntimeException("Device with id $id not found")
 
-    fun addSchedule(id: String, schedule: ScheduleCreateDTO): Device = findById(id).let { device ->
-        repository.save(device.copy(schedules = device.schedules.plus(schedule.toSchedule())))
+    fun addSchedule(id: String, schedule: ScheduleCreateDTO): Device {
+        val device = findById(id)
+
+        return repository.save(
+            device.copy(schedules = device.schedules.plus(schedule.toSchedule()))
+        )
     }
 
-    fun removeSchedule(id: String, scheduleId: String) = findById(id).let { device ->
-        repository.save(device.copy(schedules = device.schedules.filterNot { it.id == scheduleId }))
+    fun removeSchedule(id: String, scheduleId: String): Device {
+        val device = findById(id)
+
+        return repository.save(
+            device.copy(schedules = device.schedules.filterNot { it.id == scheduleId })
+        )
     }
 }
