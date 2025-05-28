@@ -1,8 +1,6 @@
 package io.marelso.schedule.controller
 
-import io.marelso.schedule.domain.Device
 import io.marelso.schedule.domain.DeviceCreateDTO
-import io.marelso.schedule.domain.Schedule
 import io.marelso.schedule.domain.ScheduleCreateDTO
 import io.marelso.schedule.service.DeviceService
 import org.springframework.http.HttpStatus
@@ -42,4 +40,7 @@ class DeviceController(private val service: DeviceService) {
         @PathVariable("id") id: String,
         @PathVariable scheduleId: String
     ) = ResponseEntity.ok(service.removeSchedule(id = id, scheduleId =  scheduleId))
+
+    @GetMapping("/{id}/subscribe")
+    fun subscribe(@PathVariable id: String) = ResponseEntity.ok(service.subscribe(id))
 }

@@ -6,9 +6,14 @@ import io.marelso.schedule.domain.ScheduleCreateDTO
 import io.marelso.schedule.repository.DeviceRepository
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
+import org.springframework.web.servlet.mvc.method.annotation.SseEmitter
 
 @Service
 class DeviceService(private val repository: DeviceRepository) {
+    private val listenerService: ListenerService = ListenerService()
+
+    fun subscribe(id: String): SseEmitter = listenerService.subscribe(id)
+
     fun create(device: DeviceCreateDTO): Device = repository.save(device.toDevice())
 
     fun delete(id: String) = repository.deleteById(id)
@@ -21,16 +26,16 @@ class DeviceService(private val repository: DeviceRepository) {
     fun addSchedule(id: String, schedule: ScheduleCreateDTO): Device {
         val device = findById(id)
 
-        return repository.save(
-            device.copy(schedules = device.schedules.plus(schedule.toSchedule()))
-        )
+        return repository.save(device.copy(schedules = device.schedules.plus(schedule.toSchedule()))).apply {
+            listenerService.notify(id)
+        }
     }
 
     fun removeSchedule(id: String, scheduleId: String): Device {
         val device = findById(id)
 
-        return repository.save(
-            device.copy(schedules = device.schedules.filterNot { it.id == scheduleId })
-        )
+        return repository.save(device.copy(schedules = device.schedules.filterNot { it.id == scheduleId })).apply {
+            listenerService.notify(id)
+        }
     }
 }
