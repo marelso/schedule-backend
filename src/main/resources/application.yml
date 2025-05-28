@@ -1,8 +1,7 @@
 spring:
   application:
     name: Schedule
-
-    data:
-      mongodb:
-        database: schedule
-        host: localhost
+  data:
+    mongodb:
+      database: schedule
+      host: localhost
