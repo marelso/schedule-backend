@@ -25,8 +25,8 @@ class ListenerService {
     }
 
     private fun addEmitter(deviceId: String, emitter: SseEmitter) {
-        listeners[deviceId]?.apply {
-            add(emitter)
-        }
+        listeners.putIfAbsent(deviceId, mutableListOf())
+
+        listeners[deviceId]?.add(emitter)
     }
 }
