@@ -1,11 +1,13 @@
 package io.marelso.schedule.domain
 
+import java.time.OffsetDateTime
+
 data class ScheduleCreateDTO(
-    val start: String? = null,
-    val end: String? = null
+    val start: OffsetDateTime,
+    val end: OffsetDateTime
 ) {
     fun toSchedule() = Schedule(
-        start = start,
-        end = end
+        start = start.toString(),
+        end = end.toString()
     )
 }
