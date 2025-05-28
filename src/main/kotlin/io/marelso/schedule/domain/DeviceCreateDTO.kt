@@ -6,6 +6,7 @@ data class DeviceCreateDTO(
     val schedules: List<ScheduleCreateDTO> = listOf(),
 ) {
     fun toDevice(): Device = Device(
+        id = id,
         name = name,
         schedules = schedules.map { it.toSchedule() }
     )

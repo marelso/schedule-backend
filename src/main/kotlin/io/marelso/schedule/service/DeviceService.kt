@@ -9,7 +9,9 @@ import org.springframework.stereotype.Service
 
 @Service
 class DeviceService(private val repository: DeviceRepository) {
-    fun create(device: DeviceCreateDTO): Device = repository.save(device.toDevice())
+    fun create(device: DeviceCreateDTO): Device = repository.existsById(device.id.orEmpty()).takeIf { it.not() }?.let {
+        repository.save(device.toDevice())
+    } ?: throw RuntimeException("Device ${device.name} already exists")
 
     fun delete(id: String) = repository.deleteById(id)
 

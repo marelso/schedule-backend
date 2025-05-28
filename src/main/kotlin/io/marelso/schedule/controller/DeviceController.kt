@@ -22,7 +22,13 @@ import org.springframework.web.bind.annotation.ResponseStatus
 class DeviceController(private val service: DeviceService) {
 
     @PostMapping
-    fun create(@RequestBody device: DeviceCreateDTO) = ResponseEntity.ok(service.create(device))
+    fun create(@RequestBody device: DeviceCreateDTO): ResponseEntity<Device> {
+        return try {
+            ResponseEntity.ok(service.create(device))
+        } catch (e: RuntimeException) {
+            ResponseEntity.status(HttpStatus.FOUND).build()
+        }
+    }
 
     @GetMapping("/{id}")
     fun get(@PathVariable("id") id: String) = ResponseEntity.ok(service.getById(id))
