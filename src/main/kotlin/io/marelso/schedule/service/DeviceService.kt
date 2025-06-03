@@ -4,6 +4,8 @@ import io.marelso.schedule.domain.Device
 import io.marelso.schedule.domain.DeviceCreateDTO
 import io.marelso.schedule.domain.ScheduleCreateDTO
 import io.marelso.schedule.repository.DeviceRepository
+import org.springframework.data.domain.Page
+import org.springframework.data.domain.Pageable
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter
@@ -17,6 +19,8 @@ class DeviceService(private val repository: DeviceRepository) {
     fun create(device: DeviceCreateDTO): Device = repository.save(device.toDevice())
 
     fun delete(id: String) = repository.deleteById(id)
+
+    fun getAll(pageable: Pageable): Page<Device> = repository.findAll(pageable)
 
     fun getById(id: String): Device = findById(id)
 

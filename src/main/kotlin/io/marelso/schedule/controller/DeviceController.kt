@@ -4,6 +4,10 @@ import io.marelso.schedule.domain.Device
 import io.marelso.schedule.domain.DeviceCreateDTO
 import io.marelso.schedule.domain.ScheduleCreateDTO
 import io.marelso.schedule.service.DeviceService
+import io.swagger.v3.oas.annotations.Parameter
+import org.springframework.data.domain.Page
+import org.springframework.data.domain.Pageable
+import org.springframework.data.web.PageableDefault
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.RequestBody
@@ -28,6 +32,13 @@ class DeviceController(private val service: DeviceService) {
             ResponseEntity.status(HttpStatus.FOUND).build()
         }
     }
+
+    @GetMapping
+    fun getAll(
+        @Parameter(hidden = true)
+        @PageableDefault(size = 15)
+        pageable: Pageable
+    ): ResponseEntity<Page<Device>> = ResponseEntity.ok(service.getAll(pageable))
 
     @GetMapping("/{id}")
     fun get(@PathVariable("id") id: String) = ResponseEntity.ok(service.getById(id))
