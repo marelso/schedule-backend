@@ -4,6 +4,8 @@ import io.marelso.schedule.domain.Device
 import io.marelso.schedule.domain.DeviceCreateDTO
 import io.marelso.schedule.domain.ScheduleCreateDTO
 import io.marelso.schedule.repository.DeviceRepository
+import org.springframework.data.domain.Page
+import org.springframework.data.domain.Pageable
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
 
@@ -14,6 +16,8 @@ class DeviceService(private val repository: DeviceRepository) {
     } ?: throw RuntimeException("Device ${device.name} already exists")
 
     fun delete(id: String) = repository.deleteById(id)
+
+    fun getAll(pageable: Pageable): Page<Device> = repository.findAll(pageable)
 
     fun getById(id: String): Device = findById(id)
 
