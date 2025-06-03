@@ -14,7 +14,8 @@ class ListenerService {
 
     fun notify(deviceId: String) {
         listeners[deviceId]?.forEach { client ->
-            client.send(Unit)
+            try { client.send(Unit) }
+            catch (e: Exception) { return@forEach }
         }
     }
 
