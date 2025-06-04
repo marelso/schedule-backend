@@ -25,6 +25,8 @@ class DeviceService(private val repository: DeviceRepository) {
         .findByIdOrNull(id) ?: throw RuntimeException("Device with id $id not found")
 
     fun addSchedule(id: String, schedule: ScheduleCreateDTO): Device {
+        if(schedule.end.isBefore(schedule.start)) throw RuntimeException("End of schedule can't be before start")
+
         val device = findById(id)
 
         return repository.save(
