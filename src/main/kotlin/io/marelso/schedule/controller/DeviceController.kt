@@ -58,4 +58,7 @@ class DeviceController(private val service: DeviceService) {
         @PathVariable("id") id: String,
         @PathVariable scheduleId: String
     ) = ResponseEntity.ok(service.removeSchedule(id = id, scheduleId =  scheduleId))
+
+    @GetMapping("/{id}/subscribe")
+    fun subscribe(@PathVariable id: String) = ResponseEntity.ok(service.subscribe(id))
 }
