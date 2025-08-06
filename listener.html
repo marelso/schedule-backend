@@ -10,10 +10,11 @@
     <div id="device-container"></div>
 
     <script>
+        const id = "string"
         function fetchDevice() {
             console.log("Fetching device info . . .")
             fetch(
-                'http://localhost:8080/api/v1/device/E41815AC', {
+                `http://localhost:8080/api/v1/device/${id}`, {
                     method: 'GET',
                     headers: { 'Accept': '*/*' }
                 }
@@ -39,7 +40,7 @@
             container.appendChild(ul);
         }
 
-        const eventSource = new EventSource("http://localhost:8080/api/v1/device/E41815AC/subscribe")
+        const eventSource = new EventSource(`http://localhost:8080/api/v1/device/${id}/subscribe`)
 
         eventSource.onmessage = (event) => {
             console.log(event)
